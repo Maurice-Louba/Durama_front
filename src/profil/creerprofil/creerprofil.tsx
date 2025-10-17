@@ -43,7 +43,7 @@ const LoginForm = () => {
 
         <p className="text-center text-sm text-gray-500 mt-2">
           Ou{" "}
-          <a href="/SignUp" className="text-black hover:underline font-medium">
+          <a onClick={()=>navigate("/SignUp")} className="text-black hover:underline font-medium">
             créez un compte
           </a>
         </p>
