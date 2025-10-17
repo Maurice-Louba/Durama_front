@@ -26,7 +26,7 @@ const VerifyEmail: React.FC = () => {
 
     try {
       // Appel API pour vérifier le code OTP
-      const response = await axios.post(
+       await axios.post(
         "https://durama-project.onrender.com/verify_otp/", 
         { email,
         otp, }

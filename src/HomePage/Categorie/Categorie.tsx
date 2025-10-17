@@ -5,7 +5,7 @@ interface CategorieItem {
   titre: string;
   sousTitre: string;
   description: string;
-  icon: JSX.Element;
+  icon: React.ReactNode;
   position: "left" | "right";
 }
 

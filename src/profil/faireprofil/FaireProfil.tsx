@@ -38,7 +38,7 @@ const SignUpForm = () => {
     }
 
     try {
-      const response = await axios.post(
+       await axios.post(
         "https://durama-project.onrender.com/register/", // 
         { email, password }
       );
