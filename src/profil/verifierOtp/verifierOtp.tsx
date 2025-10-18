@@ -26,11 +26,14 @@ const VerifyEmail: React.FC = () => {
 
     try {
       // Appel API pour vérifier le code OTP
-       await axios.post(
+       const response=await axios.post(
         "https://durama-project.onrender.com/verify_otp/", 
         { email,
         otp, }
       );
+      const { access, refresh } = response.data;
+      localStorage.setItem("access_token", access);
+      localStorage.setItem("refresh_token", refresh);
       setSuccess("Email vérifié avec succès !");
       alert("Votre email a été vérifié !");
       navigate("/MonProfil"); 

@@ -23,6 +23,7 @@ const LoginForm = () => {
                 localStorage.setItem("isAuthenticated", "true")
                 alert("Connexion réussi !")
                 navigate("/MonProfil")
+                console.log(response.data)
                 console.log("connexion reussi")
             }catch(err:any){
                 console.error(err)
