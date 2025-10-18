@@ -13,7 +13,7 @@ const LoginForm = () => {
             setError("")
             setLoading(true)
             try{
-                const response = await axios.post("http://localhost:8004/api/token/",{
+                const response = await axios.post("https://durama-project.onrender.com/api/token/",{
                     "email":email,
                     "password":password
                 });
