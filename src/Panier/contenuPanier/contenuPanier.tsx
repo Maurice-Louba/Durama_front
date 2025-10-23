@@ -2,13 +2,27 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GrShop } from "react-icons/gr";
 import { FaTrash, FaTruck, FaCalendarAlt, FaClock, FaPlus, FaMinus } from "react-icons/fa";
-import axios from "axios";
 import axiosInstance from "../../utils/axiosInstance";
 const ContenuPanier = () => {
+
+
+interface Produit {
+  id: number;
+  nom: string;
+  prix_vente: number; // ou string selon ton backend
+  image_principale: string;
+}
+
+// Type pour un élément de panier
+interface PanierItem {
+  id: number;
+  quantite: number;
+  produit: Produit;
+}
   const navigate = useNavigate();
-  const [produits, setProduits] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [total,setTotal]=useState("")
+const [produits, setProduits] = useState<PanierItem[]>([]);
+const [total, setTotal] = useState<number>(0); // ou string si ton backend renvoie string
+const [loading, setLoading] = useState<boolean>(true);
 
 
       const fetchData = async ()=>{
@@ -212,7 +226,7 @@ const ContenuPanier = () => {
                   </div>
                   <div className="flex-1">
                     <h2 className="font-bold text-lg text-gray-800 mb-1">{prod.produit.nom}</h2>
-                    <p className="text-gray-600 text-sm mb-2">{prod.nom}</p>
+                    {/*<p className="text-gray-600 text-sm mb-2">{prod.nom}</p>*/}
                     <p className="text-2xl font-bold text-black">
                       {prod.produit.prix_vente.toLocaleString()} GNF
                     </p>

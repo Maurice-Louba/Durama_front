@@ -8,13 +8,30 @@ import { RiSearch2Line } from "react-icons/ri";
 import { LuShoppingCart } from "react-icons/lu";
 import fer from "./../../assets/Images/iron-rods-474792_1280.jpg";
 import marteau from "./../../assets/Images/welded-wire-mesh-3630567_1280.jpg";
-
 import axiosInstance from "../../utils/axiosInstance";
 
+
+
+
 const Navbar = () => {
-  const [contenuPanier,setcontenuPanier]=useState([])
-  const [deuxcontenu,setdeuxcontenu]=useState([])
-  const [total,setTotal]=useState("")
+
+  interface Produit {
+  id: number;
+  nom: string;
+  prix_vente: string;      // ou number si ton backend renvoie un chiffre
+  image_principale: string;
+}
+
+// Type pour un élément de panier
+interface PanierItem {
+  id: number;
+  quantite: number;       // si tu gères la quantité
+  produit: Produit;       // <-- ton objet produit
+}
+  
+const [contenuPanier, setContenuPanier] = useState<PanierItem[]>([]);
+const [deuxcontenu, setDeuxContenu] = useState<PanierItem[]>([]);
+const [total, setTotal] = useState<string>("");
   useEffect(()=>{
     const fetchData = async ()=>{
       const token = localStorage.getItem("access");
@@ -24,7 +41,7 @@ const Navbar = () => {
             headers: { Authorization: `Bearer ${token}` },
           }
         )
-        setcontenuPanier(response.data)
+        setContenuPanier(response.data)
         console.log(response.data)
       }catch(err:any){
         console.log(err.message)
@@ -43,7 +60,7 @@ const Navbar = () => {
             headers: { Authorization: `Bearer ${token}` },
           }
         )
-        setdeuxcontenu(response.data)
+        setDeuxContenu(response.data)
         console.log(response.data)
       }catch(err:any){
         console.log(err.message)

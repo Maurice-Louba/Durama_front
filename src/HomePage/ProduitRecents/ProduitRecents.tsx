@@ -1,5 +1,5 @@
-import { MdShoppingCart, MdSearch, MdFilterList, MdClose, MdStar, MdLocalShipping } from "react-icons/md";
-import { IoCubeOutline, IoChevronDown } from "react-icons/io5";
+import { MdShoppingCart,  MdStar, MdLocalShipping } from "react-icons/md";
+import { IoCubeOutline } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { FaRegEye } from "react-icons/fa";
 import Swal from "sweetalert2";
@@ -118,14 +118,7 @@ const ProduitsRecents = () => {
     }
   };
 
-  const getStockColor = (etat: string) => {
-    switch (etat) {
-      case "en stock": return "text-green-600 bg-green-50 border-green-200";
-      case "sur commande": return "text-blue-600 bg-blue-50 border-blue-200";
-      case "rupture": return "text-red-600 bg-red-50 border-red-200";
-      default: return "text-gray-600 bg-gray-50 border-gray-200";
-    }
-  };
+
 
   const renderStars = (note: number) => {
     return (

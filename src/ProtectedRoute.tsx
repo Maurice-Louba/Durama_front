@@ -1,17 +1,16 @@
-// src/components/ProtectedRoute.tsx
 import React from "react";
 import { Navigate } from "react-router-dom";
 import { isLoggedIn } from "./utils/auth";
 
 interface ProtectedRouteProps {
-  children: JSX.Element;
+  children: React.ReactNode; 
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
+const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   if (!isLoggedIn()) {
     return <Navigate to="/Profil" replace />;
   }
-  return children;
+  return <>{children}</>; // fragment pour rendre les enfants
 };
 
 export default ProtectedRoute;
