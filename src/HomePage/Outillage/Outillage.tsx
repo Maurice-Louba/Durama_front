@@ -1,6 +1,6 @@
 import { MdShoppingCart } from "react-icons/md";
 import casque from "./../../assets/Images/casquee.jpg"
-import marteau from "./../../assets/Images/marteau.jpg"
+import marteau from "./../../assets/Images/changement.jpg"
 
 import { FaToolbox } from "react-icons/fa";
 interface Produit {
@@ -31,14 +31,14 @@ const produitsRecents: Produit[] = [
     categorie: "Outillage",
     description: "Marteau durable pour tous types de travaux.",
     prix: "24,99 €",
-    image: "/images/produits/marteau.jpg",
+    image: casque,
   },
   {
     nom: "Gilet de sécurité",
     categorie: "Sécurité",
     description: "Gilet haute visibilité pour vos chantiers.",
     prix: "19,99 €",
-    image: "/images/produits/gilet.jpg",
+    image: marteau,
   },
 ];
 
