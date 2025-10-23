@@ -38,7 +38,7 @@ axiosInstance.interceptors.response.use(
 
       if (!refresh) {
         clearTokens();
-        window.location.href = "/Profil";
+        window.location.href = "/";
         return Promise.reject(error);
       }
 
