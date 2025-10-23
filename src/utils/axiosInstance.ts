@@ -12,7 +12,7 @@ const axiosInstance = axios.create({
   },
 });
 
-// 🧩 Intercepteur de requête
+// 🧩 Intercepteur de requête : ajout du token si présent
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const { access } = getTokens();
@@ -32,16 +32,20 @@ axiosInstance.interceptors.response.use(
 
     if (!originalRequest) return Promise.reject(error);
 
+    // Si non autorisé (401) et que la requête n’a pas déjà été retentée
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
+
       const { refresh } = getTokens();
 
+      // Aucun refresh token → probablement visiteur non connecté
       if (!refresh) {
-        clearTokens();
-        window.location.href = "/";
+        console.warn("Visiteur non connecté - accès refusé à une route protégée.");
+        // ❌ On ne redirige pas, on laisse juste la requête échouer
         return Promise.reject(error);
       }
 
+      // Tentative de rafraîchir le token
       try {
         const res = await axios.post(`${baseURL}/api/token/refresh/`, { refresh });
         const newAccess = (res.data as any).access;
@@ -52,8 +56,12 @@ axiosInstance.interceptors.response.use(
 
         return axiosInstance(originalRequest);
       } catch (refreshError) {
+        console.warn("Refresh token invalide - déconnexion...");
         clearTokens();
-        window.location.href = "/Profil";
+        // Rediriger uniquement si on était sur une page nécessitant connexion
+        if (window.location.pathname.includes("/profil") || window.location.pathname.includes("/panier")) {
+          window.location.href = "/";
+        }
         return Promise.reject(refreshError);
       }
     }
