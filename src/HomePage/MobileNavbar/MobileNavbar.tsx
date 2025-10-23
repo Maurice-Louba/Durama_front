@@ -3,7 +3,8 @@ import { AiFillShop } from "react-icons/ai";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+
+import axiosInstance from "../../utils/axiosInstance";
 const MobileNavbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -30,8 +31,7 @@ const MobileNavbar = () => {
       return;
     }
 
-    axios
-      .get("https://durama-project.onrender.com/infoUser/", {
+    axiosInstance.get("/infoUser/", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -49,7 +49,7 @@ const MobileNavbar = () => {
           photo:
             data.photo,
         });
-        console.log(data)
+        console.log(user)
       })
       .catch((error) => {
         console.error("Erreur lors du chargement du profil :", error);
@@ -63,6 +63,7 @@ const MobileNavbar = () => {
   useEffect(()=>{
     const auth= localStorage.getItem('isAuthenticated')==="true"
     setIsAuthenticated(auth)
+    console.log(auth)
   })
 
   // Déterminer quelle route est active
@@ -103,7 +104,7 @@ const MobileNavbar = () => {
               user.photo==null ?
               (<FaUserCircle className={`text-xl ${currentPath=="/MonProfil"?"text-black":"text-gray-500"} ml-1  mb-1`} />):
               <div className="w-[25px] h-[25px] rounded-full border border-gray-500">
-              <img className="w-full h-full rounded-full" src={`https://durama-project.onrender.com${user.photo}`}/>
+              <img className="w-full h-full rounded-full" src={`http://127.0.0.1:8004/${user.photo}`}/>
               </div>
             ):(
               <FaUser className={`text-xl ${currentPath=="/Profil"?"text-black":"text-gray-500"} ml-1  mb-1`} />

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import axiosInstance from "../../utils/axiosInstance";
 
 interface User {
   first_name: string;
@@ -40,7 +41,7 @@ const Profil = () => {
       if (!token) return;
 
       try {
-        const response = await axios.get("https://durama-project.onrender.com/nombreCommande/", {
+        const response = await axiosInstance.get("/nombreCommande/", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setNombreCommande(response.data);
@@ -55,7 +56,7 @@ const Profil = () => {
     const fetchData = async ()=>{
         const token = localStorage.getItem("access")
         try{
-            const nombreFavoris = await axios.get("https://durama-project.onrender.com/nombreFavori/",
+            const nombreFavoris = await axiosInstance.get("/nombreFavori/",
                 {
                    headers: { Authorization: `Bearer ${token}` }, 
                 }
@@ -71,13 +72,13 @@ const Profil = () => {
   // Charger les infos du profil
   useEffect(() => {
     const token = localStorage.getItem("access");
-    if (!token) {
+    {/*if (!token) {
       navigate("/Profil");
       return;
-    }
+    }*/}
 
-    axios
-      .get("https://durama-project.onrender.com/infoUser/", {
+    axiosInstance
+      .get("/infoUser/", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -94,7 +95,7 @@ const Profil = () => {
           photo:
             data.photo == null
               ? "https://cdn-icons-png.flaticon.com/512/847/847969.png"
-              : `https://durama-project.onrender.com${data.photo}`,
+              : `http://127.0.0.1:8004${data.photo}`,
         });
       })
       .catch((error) => {
@@ -145,7 +146,7 @@ const Profil = () => {
     }
 
     try {
-      await axios.put("https://durama-project.onrender.com/infoUser/", formData, {
+      await axiosInstance.put("/infoUser/", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
@@ -168,11 +169,20 @@ const Profil = () => {
         {/* Avatar avec effet sophistiqué */}
         <div className="relative mb-6">
           <div className="absolute -inset-2 bg-gradient-to-r from-black to-gray-800 rounded-full blur-sm opacity-20"></div>
-          <img
-            src={previewPhoto || (typeof user.photo === "string" ? user.photo : URL.createObjectURL(user.photo))}
-            alt="Profil"
-            className="w-32 h-32 rounded-full border-4 border-white shadow-xl relative z-10 object-cover"
-          />
+            <img
+                src={
+                previewPhoto
+                ? previewPhoto
+                : user.photo
+                ? typeof user.photo === "string"
+                ? user.photo
+                    : URL.createObjectURL(user.photo)
+                : "https://cdn-icons-png.flaticon.com/512/847/847969.png" // image par défaut
+                }
+                alt="Profil"
+              className="w-32 h-32 rounded-full border-4 border-white shadow-xl relative z-10 object-cover"
+            />
+
           {isEditing && (
             <label className="absolute bottom-2 right-2 bg-black text-white p-2 rounded-full cursor-pointer shadow-lg hover:bg-gray-800 transition-all duration-300">
               <span className="text-sm">📷</span>
