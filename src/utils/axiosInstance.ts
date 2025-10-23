@@ -3,7 +3,7 @@ import axios, { AxiosError } from "axios";
 import type { InternalAxiosRequestConfig, AxiosResponse } from "axios";
 import { getTokens, setTokens, clearTokens } from "./auth";
 
-const baseURL = "http://127.0.0.1:8004";
+const baseURL = "https://durama-project.onrender.com";
 
 const axiosInstance = axios.create({
   baseURL,

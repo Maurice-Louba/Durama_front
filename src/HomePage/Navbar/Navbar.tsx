@@ -174,7 +174,7 @@ const [total, setTotal] = useState<string>("");
                       <div key={index} className="flex items-center justify-between  gap-18">
                         
                         <div className="w-[50px] h-[50px] overflow-hidden rounded-full border-gray-400">
-                          <img className="w-full h-full object-cover" alt={prod.produit.nom} src={`http://127.0.0.1:8004/${prod.produit.image_principale}`}/>
+                          <img className="w-full h-full object-cover" alt={prod.produit.nom} src={`https://durama-project.onrender.com/${prod.produit.image_principale}`}/>
                           
 
                         </div>
@@ -223,7 +223,7 @@ const [total, setTotal] = useState<string>("");
                       <div key={index} className="flex  w-full gap-36 justify-between">
                         
                         <div className="w-[50px] h-[50px] overflow-hidden rounded-full border-gray-400">
-                          <img className="w-full h-full object-cover" alt={prod.produit.nom} src={`http://127.0.0.1:8004/${prod.produit.image_principale}`}/>
+                          <img className="w-full h-full object-cover" alt={prod.produit.nom} src={`https://durama-project.onrender.com/${prod.produit.image_principale}`}/>
                           
 
                         </div>

@@ -95,7 +95,7 @@ const Profil = () => {
           photo:
             data.photo == null
               ? "https://cdn-icons-png.flaticon.com/512/847/847969.png"
-              : `http://127.0.0.1:8004${data.photo}`,
+              : `https://durama-project.onrender.com${data.photo}`,
         });
       })
       .catch((error) => {

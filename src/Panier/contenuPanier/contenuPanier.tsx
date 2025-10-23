@@ -46,7 +46,7 @@ const [loading, setLoading] = useState<boolean>(true);
       const fetchPanier = async () => {
       const token = localStorage.getItem("access");
       try {
-        const res = await fetch("http://127.0.0.1:8004/panier/items/", {
+        const res = await fetch("https://durama-project.onrender.com/panier/items/", {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error("Erreur de récupération du panier");
@@ -216,7 +216,7 @@ const [loading, setLoading] = useState<boolean>(true);
                   </div>
                   <div className="relative">
                     <img
-                      src={`http://127.0.0.1:8004${prod.produit.image_principale}`}
+                      src={`https://durama-project.onrender.com${prod.produit.image_principale}`}
                       alt={prod.produit.nom}
                       className="w-24 h-24 object-cover rounded-xl border border-gray-200 shadow-sm"
                     />
