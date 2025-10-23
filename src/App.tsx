@@ -6,7 +6,7 @@ import { BrowserRouter as Router,Routes,Route } from 'react-router-dom';
 import 'aos/dist/aos.css';
 import { useEffect } from 'react';
 import ToutBoutique from './Boutique/ToutBoutique';
-import ProtectedRoute from "./ProtectedRoute";
+
 import ToutPanier from './Panier/ToutPanier';
 import ToutFavori from './Favori/ToutFavori';
 import Toutprofil from './profil/Toutprofil';
