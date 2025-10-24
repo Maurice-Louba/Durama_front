@@ -72,7 +72,7 @@ const [total, setTotal] = useState<string>("");
     const fetchData = async ()=>{
       const token = localStorage.getItem("access");
       try{
-        const response = await axiosInstance .get("/prix_total/",
+        const response = await axiosInstance.get("/prix_total/",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -223,7 +223,7 @@ const [total, setTotal] = useState<string>("");
                       <div key={index} className="flex  w-full gap-36 justify-between">
                         
                         <div className="w-[50px] h-[50px] overflow-hidden rounded-full border-gray-400">
-                          <img className="w-full h-full object-cover" alt={prod.produit.nom} src={`https://durama-project.onrender.com/${prod.produit.image_principale}`}/>
+                          <img className="w-full h-full object-cover" alt={prod.produit.nom} src={`https://durama-project.onrender.com${prod.produit.image_principale}`}/>
                           
 
                         </div>

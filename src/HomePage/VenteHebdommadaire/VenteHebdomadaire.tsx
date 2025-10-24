@@ -1,37 +1,37 @@
 import { FaTag } from "react-icons/fa";
-import marteau from "./../../assets/Images/marteau.jpg";
+import { useEffect, useState } from "react";
+import axiosInstance from "../../utils/axiosInstance";
+
+interface Produit {
+  id: number;
+  nom: string;
+  categorie: {
+    gros_categorie: string;
+  };
+  description_courte: string;
+  prix_vente: string;
+  prix_promo: string;
+  image_principale: string;
+  etat_stock: string;
+  note_moyenne?: number;
+  livraison_gratuite?: boolean;
+}
+
 
 const VenteHebdomadaire = () => {
-  const venteHebo = [
-    {
-      nom: "Casque de chantier",
-      categorie: "Sécurité",
-      description: "Casque résistant aux chocs pour protection optimale.",
-      prix: "49,99 €",
-      image: marteau,
-    },
-    {
-      nom: "Casque de chantier",
-      categorie: "Sécurité",
-      description: "Casque résistant aux chocs pour protection optimale.",
-      prix: "49,99 €",
-      image: marteau,
-    },
-    {
-      nom: "Casque de chantier",
-      categorie: "Sécurité",
-      description: "Casque résistant aux chocs pour protection optimale.",
-      prix: "49,99 €",
-      image: marteau,
-    },
-    {
-      nom: "Casque de chantier",
-      categorie: "Sécurité",
-      description: "Casque résistant aux chocs pour protection optimale.",
-      prix: "49,99 €",
-      image: marteau,
-    },
-  ];
+  const [venteHebo,setVenteHebo]=useState<Produit[]>([])
+  useEffect(()=>{
+    const fetchData= async ()=>{
+      try{
+        const response= await axiosInstance.get("vente-hebdo/")
+        console.log(response.data)
+        setVenteHebo(response.data)
+      }catch(err:any){
+        console.log(err.message)
+      }
+    }
+    fetchData()
+  },[])
 
   return (
     <div className="bg-[#F5F5F5] py-10">
@@ -64,7 +64,7 @@ const VenteHebdomadaire = () => {
               {/* Image */}
               <div className="w-[70px] h-[70px] flex-shrink-0">
                 <img
-                  src={prod.image}
+                  src={`https://durama-project.onrender.com${prod.image_principale}`}
                   alt={prod.nom}
                   className="w-full h-full object-cover rounded-lg"
                 />
@@ -73,8 +73,8 @@ const VenteHebdomadaire = () => {
               {/* Infos */}
               <div className="flex flex-col">
                 <p className="text-base font-bold text-gray-900">{prod.nom}</p>
-                <p className="text-sm text-gray-500">{prod.categorie}</p>
-                <p className="text-sm text-gray-400">{prod.prix}</p>
+                <p className="text-sm text-gray-500">{prod.categorie.gros_categorie}</p>
+                <p className="text-sm text-gray-400">{prod.prix_vente} GNF</p>
               </div>
             </div>
           ))}

@@ -44,6 +44,7 @@ const GrosOeuvres = () => {
           note_moyenne: Math.random() * 2 + 3, // Note entre 3 et 5
            
         }));
+        console.log("gros-oeuvres",response.data)
         setQuatreProduits(produitsAvecDetails);
       } catch (err: any) {
         console.log(err.message);
@@ -62,6 +63,7 @@ const GrosOeuvres = () => {
 
   const handleAjoutPanier = async (prod: Produit) => {
     const { access } = getTokens();
+     
 
     if (!access) {
       Swal.fire({
@@ -192,9 +194,9 @@ const GrosOeuvres = () => {
                 )}
 
                 {/* Badge Nouveau */}
-                <div className="absolute bottom-2 left-2 bg-black text-white px-2 py-1 rounded text-xs font-medium">
+                {/*<div className="absolute bottom-2 left-2 bg-black text-white px-2 py-1 rounded text-xs font-medium">
                   NOUVEAU
-                </div>
+                </div>*/}
               </div>
 
               {/* Contenu de la carte */}

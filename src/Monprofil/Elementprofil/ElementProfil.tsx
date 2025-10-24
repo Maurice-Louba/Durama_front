@@ -105,12 +105,13 @@ const Profil = () => {
   }, [navigate]);
 
   // Gérer la déconnexion
-  const handleLogout = () => {
-    localStorage.removeItem("access");
-    localStorage.removeItem("refresh");
-    localStorage.setItem("isAuthenticated", "false");
-    navigate("/Profil");
-  };
+const handleLogout = () => {
+  localStorage.removeItem("access");
+  localStorage.removeItem("refresh");
+  localStorage.setItem("isAuthenticated", "false");
+  delete axiosInstance.defaults.headers.common["Authorization"];
+  navigate("/Profil");
+};
 
   // Gérer la modification
   const handleEditToggle = () => {
