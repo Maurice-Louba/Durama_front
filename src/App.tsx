@@ -16,8 +16,9 @@ import VerifyEmail from './profil/verifierOtp/verifierOtp';
 
 import { getTokens, setTokens, clearTokens } from "./utils/auth";
 import axios from "axios";
+import ProduitDetails from './ProduitDetails/ProduitDetails';
 
-const baseURL = "https://durama-project.onrender.com"; 
+const baseURL = "http://127.0.0.1:8004"; 
 
 function App() {
       useEffect(() => {
@@ -61,6 +62,7 @@ function App() {
         <Route path='/MonProfil' element={<Toutmonprofil/>}/>
         <Route path='/SignUp' element={<SignUpForm/>}/>
         <Route path="/VerifierOtp" element={<VerifyEmail/>}/>
+        <Route path="/produit/:slug" element={<ProduitDetails/>}/>
       </Routes>
     </Router>
   )

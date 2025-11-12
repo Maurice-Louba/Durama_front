@@ -16,6 +16,7 @@ interface Produit {
   };
   description_courte: string;
   prix_vente: string;
+  slug: String;
   prix_promo: string;
   image_principale: string;
   etat_stock: string;
@@ -173,7 +174,7 @@ const GrosOeuvres = () => {
               {/* Image avec badges */}
               <div className="relative">
                 <img
-                  src={`https://durama-project.onrender.com${prod.image_principale}`}
+                  src={`http://127.0.0.1:8004${prod.image_principale}`}
                   alt={prod.nom}
                   className="w-full h-40 sm:h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -267,7 +268,7 @@ const GrosOeuvres = () => {
                     <span className="text-xs">Ajouter</span>
                   </button>
                   
-                  <button className="w-10 h-10 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50 transition-colors text-sm">
+                  <button onClick={()=>navigate(`/produit/${prod.slug}`)} className="w-10 h-10 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50 transition-colors text-sm">
                     <FaRegEye  className="text-black" size={15}/>
                   </button>
                 </div>

@@ -18,6 +18,7 @@ interface Produit {
   prix_promo: string;
   image_principale: string;
   etat_stock: string;
+  slug:string;
   note_moyenne?: number;
   livraison_gratuite?: boolean;
 }
@@ -373,7 +374,7 @@ const Boutique = () => {
               {/* Image avec badges */}
               <div className="relative">
                 <img
-                  src={`https://durama-project.onrender.com${prod.image_principale}`}
+                  src={`http://127.0.0.1:8004${prod.image_principale}`}
                   alt={prod.nom}
                   className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-200"
                 />
@@ -457,7 +458,7 @@ const Boutique = () => {
                     <span className="text-xs">Ajouter</span>
                   </button>
                   
-                  <button className="w-10 h-10 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50 transition-colors">
+                  <button onClick={()=>navigate(`/produit/${prod.slug}`)} className="w-10 h-10 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50 transition-colors">
                     <span className="text-lg"><FaRegEye  size={15} className="text-black"/></span>
                   </button>
                 </div>
