@@ -200,7 +200,7 @@ const ContenuFavori = () => {
               {/* Image du produit */}
               <div className="relative overflow-hidden bg-gray-100">
                 <img
-                  src={`http://127.0.0.1:8004${favori.produit.image_principale}`}
+                  src={`https://durama-project.onrender.com${favori.produit.image_principale}`}
                   alt={favori.produit.nom}
                   className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
                 />

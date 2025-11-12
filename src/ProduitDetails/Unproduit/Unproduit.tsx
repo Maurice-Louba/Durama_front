@@ -37,7 +37,7 @@ export default function ProductPage() {
   useEffect(() => {
     const fetchProduit = async (slug: any) => {
       try {
-        const response = await axiosInstance.get(`http://127.0.0.1:8004/produits/${slug}/`);
+        const response = await axiosInstance.get(`https://durama-project.onrender.com/produits/${slug}/`);
         setProduit(response.data);
       } catch (err: any) {
         console.log(err.message);
@@ -52,7 +52,7 @@ useEffect(() => {
 
     try {
       const response = await axiosInstance.get(
-        `http://127.0.0.1:8004/verification/${produit.id}/`
+        `https://durama-project.onrender.com/verification/${produit.id}/`
       );
       setVerification(response.data.existe); 
       console.log(response.data);
@@ -69,7 +69,7 @@ useEffect(() => {
   useEffect(() => {
     const fetchImages = async (slug: any) => {
       try {
-        const response = await axiosInstance.get(`http://127.0.0.1:8004/images_un_produit/${slug}/`);
+        const response = await axiosInstance.get(`https://durama-project.onrender.com/images_un_produit/${slug}/`);
         setImage(response.data);
       } catch (err: any) {
         console.log(err.message);
@@ -79,11 +79,11 @@ useEffect(() => {
   }, [slug]);
   const handleFavoris = async (prod:Produit)=>{
     try{
-       await axiosInstance.post(`http://127.0.0.1:8004/unProduitCommeFavorie/${prod.id}/`,{
+       await axiosInstance.post(`https://durama-project.onrender.com/unProduitCommeFavorie/${prod.id}/`,{
         produit_id:prod.id
       })
         const response = await axiosInstance.get(
-        `http://127.0.0.1:8004/verification/${prod.id}/`
+        `https://durama-project.onrender.com/verification/${prod.id}/`
       );
       setVerification(response.data.existe); 
       console.log("ajout")
@@ -94,9 +94,9 @@ useEffect(() => {
   }
     const handleDeleteFavoris = async (prod:Produit)=>{
     try{
-       await axiosInstance.delete(`http://127.0.0.1:8004/supprimer_favori/${prod.id}/`)
+       await axiosInstance.delete(`https://durama-project.onrender.com/supprimer_favori/${prod.id}/`)
              const response = await axiosInstance.get(
-        `http://127.0.0.1:8004/verification/${prod.id}/`
+        `https://durama-project.onrender.com/verification/${prod.id}/`
       );
       setVerification(response.data.existe); 
       console.log("suppression")
@@ -136,7 +136,7 @@ useEffect(() => {
     }
 
     try {
-      const response = await axiosInstance.post("http://127.0.0.1:8004/panier/items/", {
+      const response = await axiosInstance.post("https://durama-project.onrender.com/panier/items/", {
         produit_id: prod.id,
         quantite: 1,
         is_variable: false,
@@ -200,7 +200,7 @@ useEffect(() => {
           <div className="space-y-4 lg:space-y-6">
             <div className="w-full bg-gray-50 rounded-xl lg:rounded-2xl overflow-hidden border border-gray-200 touch-pan-y">
               <img
-                src={`http://127.0.0.1:8004${images.length > 0 ? images[mainIndex].image : produit?.image_principale ?? ""}`}
+                src={`https://durama-project.onrender.com${images.length > 0 ? images[mainIndex].image : produit?.image_principale ?? ""}`}
                 alt={produit.nom ?? "Produit principal"}
                 className="w-full aspect-square object-cover"
               />
@@ -217,7 +217,7 @@ useEffect(() => {
                   }`}
                   aria-label={`Voir l'image ${i + 1}`}
                 >
-                  <img src={`http://127.0.0.1:8004${src.image}`} alt={`Vue ${i + 1}`} className="w-full h-full object-cover" />
+                  <img src={`https://durama-project.onrender.com${src.image}`} alt={`Vue ${i + 1}`} className="w-full h-full object-cover" />
                 </button>
               ))}
             </div>

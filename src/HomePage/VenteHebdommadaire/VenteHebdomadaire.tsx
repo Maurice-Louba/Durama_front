@@ -64,7 +64,7 @@ const VenteHebdomadaire = () => {
               {/* Image */}
               <div className="w-[70px] h-[70px] flex-shrink-0">
                 <img
-                  src={`http://127.0.0.1:8004${prod.image_principale}`}
+                  src={`https://durama-project.onrender.com${prod.image_principale}`}
                   alt={prod.nom}
                   className="w-full h-full object-cover rounded-lg"
                 />

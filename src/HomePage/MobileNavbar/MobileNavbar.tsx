@@ -104,7 +104,7 @@ const MobileNavbar = () => {
               user.photo==null ?
               (<FaUserCircle className={`text-xl ${currentPath=="/MonProfil"?"text-black":"text-gray-500"} ml-1  mb-1`} />):
               <div className="w-[25px] h-[25px] rounded-full border border-gray-500">
-              <img className="w-full h-full rounded-full" src={`http://127.0.0.1:8004${user.photo}`}/>
+              <img className="w-full h-full rounded-full" src={`https://durama-project.onrender.com${user.photo}`}/>
               </div>
             ):(
               <FaUser className={`text-xl ${currentPath=="/Profil"?"text-black":"text-gray-500"} ml-1  mb-1`} />

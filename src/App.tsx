@@ -18,7 +18,7 @@ import { getTokens, setTokens, clearTokens } from "./utils/auth";
 import axios from "axios";
 import ProduitDetails from './ProduitDetails/ProduitDetails';
 
-const baseURL = "http://127.0.0.1:8004"; 
+const baseURL = "https://durama-project.onrender.com"; 
 
 function App() {
       useEffect(() => {
