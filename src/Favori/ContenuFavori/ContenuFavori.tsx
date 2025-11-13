@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaHeart,  FaEye, FaTrash, FaStar, FaArrowLeft } from "react-icons/fa6";
+import { FaHeart,  FaEye, FaTrash, FaStar } from "react-icons/fa6";
 import {FaShoppingBag}  from "react-icons/fa"
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
@@ -67,12 +67,13 @@ const ContenuFavori = () => {
     }
   };
 
-  const removeFromFavoris = async (favoriId: number) => {
+  const removeFromFavoris = async (favoriId:number) => {
     const token = localStorage.getItem("access");
     try {
       await axiosInstance.delete(`/supprimer_favori/${favoriId}/`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      fetchFavoris()
       setFavoris(favoris.filter(fav => fav.id !== favoriId));
     } catch (error) {
       console.error("Erreur lors de la suppression:", error);
@@ -138,12 +139,6 @@ const ContenuFavori = () => {
     }
   };
 
-  const handleRemoveClick = (favoriId: number, e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (window.confirm("Supprimer ce produit de vos favoris ?")) {
-      removeFromFavoris(favoriId);
-    }
-  };
 
   useEffect(() => {
     fetchFavoris();
@@ -187,15 +182,15 @@ const ContenuFavori = () => {
       {/* Header fixe */}
       <div className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-10">
         <div className="px-4 py-4">
-          <div className="flex items-center justify-between">
-            <button 
+          <div className="flex items-center justify-center">
+            {/*<button 
               onClick={() => navigate(-1)}
               className="p-2 rounded-lg bg-gray-100"
             >
               <FaArrowLeft className="text-lg" />
-            </button>
+            </button>*/}
             <h1 className="text-xl font-bold text-gray-900">Mes Favoris</h1>
-            <div className="w-6"></div> {/* Pour l'équilibrage */}
+             {/* Pour l'équilibrage */}
           </div>
           <p className="text-gray-600 text-center mt-2 text-sm">
             {favoris.length} produit{favoris.length > 1 ? 's' : ''} dans votre liste
@@ -238,7 +233,7 @@ const ContenuFavori = () => {
                     </p>
                   </div>
                   <button
-                    onClick={(e) => handleRemoveClick(favori.id, e)}
+                    onClick={(e) => removeFromFavoris(favori.produit.id)}
                     className="flex-shrink-0 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors ml-2"
                   >
                     <FaTrash className="text-base" />
