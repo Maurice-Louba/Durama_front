@@ -233,7 +233,7 @@ const ContenuFavori = () => {
                     </p>
                   </div>
                   <button
-                    onClick={(e) => removeFromFavoris(favori.produit.id)}
+                    onClick={() => removeFromFavoris(favori.produit.id)}
                     className="flex-shrink-0 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors ml-2"
                   >
                     <FaTrash className="text-base" />

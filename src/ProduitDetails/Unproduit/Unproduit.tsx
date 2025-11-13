@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaHeart, FaShareAlt, FaMinus, FaPlus, FaShoppingCart, FaTruck, FaShieldAlt, FaStar, FaCheck, FaArrowLeft } from "react-icons/fa";
+import { FaHeart, FaShareAlt, FaMinus, FaPlus, FaShoppingCart, FaTruck, FaShieldAlt, FaStar, FaCheck } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import Swal from "sweetalert2";
