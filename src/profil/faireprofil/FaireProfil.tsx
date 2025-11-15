@@ -39,7 +39,7 @@ const SignUpForm = () => {
 
     try {
        await axios.post(
-        "https://durama-project.onrender.com/register/", // 
+        "http://127.0.0.1:8004/register/", // 
         { email, password }
       );
       setSuccess("Compte créé avec succès !");

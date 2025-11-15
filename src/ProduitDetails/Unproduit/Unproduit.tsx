@@ -49,6 +49,32 @@ interface Produit {
   materiau?: string;
 }
 
+interface Attribut {
+  id: number;
+  produit_variable: {
+    produit: Produit;
+    prix_fournisseur: string;
+    prix_vente: string;
+    prix_promo: string;
+    quantite: number;
+    created_at: string;
+    updated_at: string;
+  };
+  attribut: {
+    id: number;
+    typeAttribut: {
+      id: number;
+      nom: string;
+      created_at: string;
+      updated_at: string;
+    };
+    valeur: string;
+    code_Couleur: string | null;
+    created_at: string;
+    updated_at: string;
+  };
+}
+
 export default function ProductPage() {
   const [mainIndex, setMainIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
@@ -58,6 +84,9 @@ export default function ProductPage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'description' | 'caracteristiques'>('description');
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+  const [attributs, setAttributs] = useState<Attribut[]>([]);
+  const [selectedAttributs, setSelectedAttributs] = useState<{[key: string]: string}>({});
+  const [loadingAttributs, setLoadingAttributs] = useState(false);
 
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -90,8 +119,9 @@ export default function ProductPage() {
     const fetchProduit = async (slug: any) => {
       try {
         setLoading(true);
-        const response = await axiosInstance.get(`https://durama-project.onrender.com/produits/${slug}/`);
+        const response = await axiosInstance.get(`http://127.0.0.1:8004/produits/${slug}/`);
         setProduit(response.data);
+        console.log("voici le json",response.data.caracteristiques)
       } catch (err: any) {
         console.log(err.message);
         Swal.fire({
@@ -107,13 +137,50 @@ export default function ProductPage() {
     fetchProduit(slug);
   }, [slug]);
 
+  // Fetch attributs
+  useEffect(() => {
+    const fetchAttributs = async () => {
+      if (!slug) return;
+      
+      try {
+        setLoadingAttributs(true);
+        const response = await axiosInstance.get(`http://127.0.0.1:8004/variantes/${slug}/attributs/`);
+        setAttributs(response.data);
+        
+        // Initialiser les sélections par défaut avec le premier attribut de chaque type
+        const defaultSelections: {[key: string]: string} = {};
+        const grouped = response.data.reduce((acc: {[key: string]: Attribut[]}, attr: Attribut) => {
+          const typeName = attr.attribut.typeAttribut.nom;
+          if (!acc[typeName]) {
+            acc[typeName] = [];
+          }
+          acc[typeName].push(attr);
+          return acc;
+        }, {});
+
+        Object.keys(grouped).forEach(typeName => {
+          if (grouped[typeName].length > 0) {
+            defaultSelections[typeName] = grouped[typeName][0].attribut.valeur;
+          }
+        });
+        setSelectedAttributs(defaultSelections);
+      } catch (err: any) {
+        console.log("Erreur lors du chargement des attributs:", err.message);
+      } finally {
+        setLoadingAttributs(false);
+      }
+    };
+    
+    fetchAttributs();
+  }, [slug]);
+
   useEffect(() => {
     const fetchData = async () => {
       if (!produit || !produit.id) return;
 
       try {
         const response = await axiosInstance.get(
-          `https://durama-project.onrender.com/verification/${produit.id}/`
+          `http://127.0.0.1:8004/verification/${produit.id}/`
         );
         setVerification(response.data.existe);
       } catch (err: any) {
@@ -128,7 +195,7 @@ export default function ProductPage() {
   useEffect(() => {
     const fetchImages = async (slug: any) => {
       try {
-        const response = await axiosInstance.get(`https://durama-project.onrender.com/images_un_produit/${slug}/`);
+        const response = await axiosInstance.get(`http://127.0.0.1:8004/images_un_produit/${slug}/`);
         setImage(response.data);
       } catch (err: any) {
         console.log(err.message);
@@ -139,11 +206,11 @@ export default function ProductPage() {
 
   const handleFavoris = async (prod: Produit) => {
     try {
-      await axiosInstance.post(`https://durama-project.onrender.com/unProduitCommeFavorie/${prod.id}/`, {
+      await axiosInstance.post(`http://127.0.0.1:8004/unProduitCommeFavorie/${prod.id}/`, {
         produit_id: prod.id
       });
       const response = await axiosInstance.get(
-        `https://durama-project.onrender.com/verification/${prod.id}/`
+        `http://127.0.0.1:8004/verification/${prod.id}/`
       );
       setVerification(response.data.existe);
       Swal.fire({
@@ -160,9 +227,9 @@ export default function ProductPage() {
 
   const handleDeleteFavoris = async (prod: Produit) => {
     try {
-      await axiosInstance.delete(`https://durama-project.onrender.com/supprimer_favori/${prod.id}/`);
+      await axiosInstance.delete(`http://127.0.0.1:8004/supprimer_favori/${prod.id}/`);
       const response = await axiosInstance.get(
-        `https://durama-project.onrender.com/verification/${prod.id}/`
+        `http://127.0.0.1:8004/verification/${prod.id}/`
       );
       setVerification(response.data.existe);
       Swal.fire({
@@ -176,6 +243,23 @@ export default function ProductPage() {
       console.log(err.message);
     }
   };
+
+  const handleAttributSelection = (typeName: string, valeur: string) => {
+    setSelectedAttributs(prev => ({
+      ...prev,
+      [typeName]: valeur
+    }));
+  };
+
+  // Grouper les attributs par type
+  const groupedAttributs = attributs.reduce((acc, attr) => {
+    const typeName = attr.attribut.typeAttribut.nom;
+    if (!acc[typeName]) {
+      acc[typeName] = [];
+    }
+    acc[typeName].push(attr);
+    return acc;
+  }, {} as {[key: string]: Attribut[]});
 
   const handleAjoutPanier = async (prod: Produit) => {
     const { access } = getTokens();
@@ -206,12 +290,22 @@ export default function ProductPage() {
     }
 
     try {
-      const response = await axiosInstance.post("https://durama-project.onrender.com/panier/items/", {
+      // Trouver la variante correspondant aux attributs sélectionnés
+      const selectedVariante = attributs.find(attr => {
+        return Object.entries(selectedAttributs).every(([type, valeur]) => {
+          const attrForType = attributs.find(a => 
+            a.attribut.typeAttribut.nom === type && a.attribut.valeur === valeur
+          );
+          return attrForType && attrForType.produit_variable === attr.produit_variable;
+        });
+      });
+
+      const response = await axiosInstance.post("http://127.0.0.1:8004/panier/items/", {
         produit_id: prod.id,
         quantite: quantity,
-        is_variable: false,
-        produit_variable: null,
-        attribut_valeur: null,
+        is_variable: selectedVariante !== undefined,
+        produit_variable: selectedVariante?.produit_variable || null,
+        attribut_valeur: selectedAttributs,
       });
 
       if (response.status === 201) {
@@ -234,6 +328,100 @@ export default function ProductPage() {
         confirmButtonColor: "#d33",
       });
     }
+  };
+
+  // Composant pour afficher les sélecteurs d'attributs
+  const renderAttributSelectors = () => {
+    if (loadingAttributs) {
+      return (
+        <div className="flex justify-center py-4">
+          <div className="animate-pulse text-gray-500">Chargement des options...</div>
+        </div>
+      );
+    }
+
+    if (Object.keys(groupedAttributs).length === 0) {
+      return null;
+    }
+
+    return (
+      <div className="space-y-6">
+        <h3 className={`font-semibold text-gray-900 ${isMobile ? 'text-lg' : 'text-xl'}`}>
+          Options disponibles
+        </h3>
+        
+        {Object.entries(groupedAttributs).map(([typeName, attrs]) => (
+          <div key={typeName} className="space-y-3">
+            <label className="block font-medium text-gray-800">
+              {typeName}:
+              <span className="ml-2 text-gray-600 font-normal">
+                {selectedAttributs[typeName]}
+              </span>
+            </label>
+            
+            <div className={`flex flex-wrap gap-3 ${
+              typeName.toLowerCase() === 'couleur' ? 'items-center' : ''
+            }`}>
+              {attrs.map((attr) => {
+                const isSelected = selectedAttributs[typeName] === attr.attribut.valeur;
+                const isColorType = typeName.toLowerCase() === 'couleur';
+                const hasColorCode = attr.attribut.code_Couleur && attr.attribut.code_Couleur !== 'null';
+                
+                // Rendu pour les attributs COULEUR avec code couleur
+                if (isColorType && hasColorCode) {
+                  return (
+                    <button
+                      key={attr.id}
+                      onClick={() => handleAttributSelection(typeName, attr.attribut.valeur)}
+                      className={`
+                        relative w-10 h-10 rounded-lg border-2 transition-all duration-200 
+                        flex items-center justify-center
+                        ${isSelected ? 'border-gray-500 scale-110 shadow-md' : 'border-gray-300 hover:border-gray-400'}
+                      `}
+                      style={{ backgroundColor: attr.attribut.code_Couleur ??"transparent" }}
+                      title={attr.attribut.valeur}
+                    >
+                      {/* Icône de vérification pour les couleurs claires */}
+                      {isSelected && (
+                        <FaCheck 
+                          className={`
+                            ${attr.attribut.code_Couleur === '#FFFFFF' || 
+                              attr.attribut.code_Couleur === '#FFF' ||
+                              attr.attribut.code_Couleur?.toLowerCase() === 'white'
+                                ? 'text-black' 
+                                : 'text-white'
+                            }
+                          `} 
+                          size={12} 
+                        />
+                      )}
+                    </button>
+                  );
+                }
+                
+                // Rendu pour les autres types d'attributs (Taille, Puissance, etc.)
+                return (
+                  <button
+                    key={attr.id}
+                    onClick={() => handleAttributSelection(typeName, attr.attribut.valeur)}
+                    className={`
+                      px-4 py-2 rounded-lg border-2 transition-all duration-200 font-medium
+                      ${isSelected 
+                        ? 'bg-black text-white border-black shadow-md' 
+                        : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400 hover:bg-gray-50'
+                      }
+                      ${isMobile ? 'text-sm' : 'text-base'}
+                    `}
+                  >
+                    {attr.attribut.valeur}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   };
 
   if (loading) {
@@ -272,13 +460,6 @@ export default function ProductPage() {
         {/* Header Mobile Fixe */}
         <div className="fixed top-0 left-0 right-0 bg-white z-50 border-b border-gray-200 px-4 py-3 shadow-sm">
           <div className="flex items-center justify-between">
-            {/*<button 
-              onClick={() => navigate(-1)}
-              className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center shadow-sm"
-            >
-              <FaArrowLeft className="text-gray-600" size={16} />
-            </button>*/}
-            
             <h1 className="text-lg font-bold truncate max-w-[140px] text-center">
               {produit.nom}
             </h1>
@@ -307,7 +488,7 @@ export default function ProductPage() {
           <div className="relative">
             <div className="w-full bg-gray-50 overflow-hidden">
               <img
-                src={`https://durama-project.onrender.com${images.length > 0 ? images[mainIndex].image : produit.image_principale}`}
+                src={`http://127.0.0.1:8004${images.length > 0 ? images[mainIndex].image : produit.image_principale}`}
                 alt={produit.nom}
                 className="w-full aspect-square object-cover"
               />
@@ -364,7 +545,7 @@ export default function ProductPage() {
                     }`}
                   >
                     <img 
-                      src={`https://durama-project.onrender.com${src.image}`} 
+                      src={`http://127.0.0.1:8004${src.image}`} 
                       alt={`Vue ${i + 1}`} 
                       className="w-full h-full object-cover" 
                     />
@@ -380,7 +561,6 @@ export default function ProductPage() {
             {/* Catégorie et SKU */}
             <div className="flex items-center justify-between text-sm text-gray-500">
               <span>{produit.categorie.nom} • {produit.sous_categorie.nom}</span>
-              {/*<span>SKU: {produit.sku}</span>*/}
             </div>
 
             {/* Nom du Produit */}
@@ -416,6 +596,9 @@ export default function ProductPage() {
                 <span className="text-sm">({produit.quantite} restants)</span>
               )}
             </div>
+
+            {/* SECTION DES ATTRIBUTS - NOUVEAU */}
+            {renderAttributSelectors()}
 
             {/* Description Courte */}
             <p className="text-gray-700 leading-relaxed text-base">
@@ -562,26 +745,8 @@ export default function ProductPage() {
         </div>
 
         {/* Bottom Bar Fixe Mobile */}
-        <div className=" fixed -mt-40 bottom-15 to left-0 right-0 bg-white border-t border-gray-200 p-4 safe-area-bot shadow-2xl">
+        <div className="fixed -mt-40 bottom-15 left-0 right-0 bg-white border-t border-gray-200 p-4 safe-area-bot shadow-2xl">
           <div className="flex items-center gap-3">
-            {/*<div className="flex items-center bg-white border border-gray-300 rounded-xl overflow-hidden flex-shrink-0 shadow-sm">
-              <button 
-                onClick={() => setQuantity(q => Math.max(1, q - 1))} 
-                className="w-12 h-12 flex items-center justify-center text-gray-600 active:bg-gray-100"
-              >
-                <FaMinus size={14} />
-              </button>
-              <div className="w-12 h-12 flex items-center justify-center font-semibold border-x border-gray-200">
-                {quantity}
-              </div>
-              <button 
-                onClick={() => setQuantity(q => q + 1)} 
-                className="w-12 h-12 flex items-center justify-center text-gray-600 active:bg-gray-100"
-              >
-                <FaPlus size={14} />
-              </button>
-            </div>*/}
-            
             <button 
               onClick={() => handleAjoutPanier(produit)}
               disabled={produit.quantite === 0}
@@ -640,7 +805,7 @@ export default function ProductPage() {
                 </div>
               )}
               <img
-                src={`https://durama-project.onrender.com${images.length > 0 ? images[mainIndex].image : produit.image_principale}`}
+                src={`http://127.0.0.1:8004${images.length > 0 ? images[mainIndex].image : produit.image_principale}`}
                 alt={produit.nom}
                 className="w-full aspect-square object-cover"
               />
@@ -659,7 +824,7 @@ export default function ProductPage() {
                     aria-label={`Voir l'image ${i + 1}`}
                   >
                     <img 
-                      src={`https://durama-project.onrender.com${src.image}`} 
+                      src={`http://127.0.0.1:8004${src.image}`} 
                       alt={`Vue ${i + 1}`} 
                       className="w-full h-full object-cover" 
                     />
@@ -722,6 +887,9 @@ export default function ProductPage() {
               )}
             </div>
 
+            {/* SECTION DES ATTRIBUTS - NOUVEAU */}
+            {renderAttributSelectors()}
+
             {/* Short Description */}
             <p className="text-gray-700 leading-relaxed text-lg">
               {produit.description_courte}
@@ -765,6 +933,13 @@ export default function ProductPage() {
                   <div className="flex justify-between py-3 border-b border-gray-200">
                     <span className="text-gray-600">Matériau</span>
                     <span className="font-medium">{produit.materiau}</span>
+                  </div>
+                )}
+
+                {produit.caracteristiques  && (
+                  <div className="flex justify-between py-3 border-b border-gray-200">
+                    <span className="text-gray-600">Complements</span>
+                    <span className="font-medium">{produit.caracteristiques}</span>
                   </div>
                 )}
               </div>
@@ -825,7 +1000,7 @@ export default function ProductPage() {
             </div>
 
             {/* Action Buttons Desktop */}
-            <div className="flex  gap-4 pt-6 ">
+            <div className="flex gap-4 pt-6">
               <div className="flex gap-3">
                 <button
                   onClick={() => verification ? handleDeleteFavoris(produit) : handleFavoris(produit)}
@@ -844,9 +1019,9 @@ export default function ProductPage() {
               
               <button
                 onClick={() => handleAjoutPanier(produit)}
-                disabled={produit.quantite === 0}
-                className={`flex-1 flex items-center justify-center  gap-4 rounded-xl h-16 font-bold text-xl transition-all duration-200 ${
-                  produit.quantite === 0
+                disabled={produit.quantite === 0  || produit.etat_stock==="rupture stock"}
+                className={`flex-1 flex items-center justify-center gap-4 rounded-xl h-16 font-bold text-xl transition-all duration-200 ${
+                  produit.quantite === 0 || produit.etat_stock==="rupture stock"
                     ? "bg-gray-400 text-gray-200 cursor-not-allowed"
                     : "bg-black text-white hover:bg-gray-800 active:scale-95"
                 }`}

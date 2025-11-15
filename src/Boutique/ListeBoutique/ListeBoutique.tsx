@@ -374,7 +374,7 @@ const Boutique = () => {
               {/* Image avec badges */}
               <div className="relative">
                 <img
-                  src={`https://durama-project.onrender.com${prod.image_principale}`}
+                  src={`http://127.0.0.1:8004${prod.image_principale}`}
                   alt={prod.nom}
                   className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-200"
                 />
