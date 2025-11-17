@@ -19,7 +19,7 @@ const LoginForm = () => {
     setLoading(true);
     try {
       // endpoint de login (token pair)
-      const response = await axios.post("http://127.0.0.1:8004/api/token/", {
+      const response = await axios.post("https://durama-project.onrender.com/api/token/", {
         email,
         password,
       });

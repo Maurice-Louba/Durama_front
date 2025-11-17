@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       localStorage.setItem("token", data.access);
 
       // tu peux aussi récupérer les infos utilisateur :
-      const userResponse = await fetch("http://127.0.0.1:8004/infoUser//", {
+      const userResponse = await fetch("https://durama-project.onrender.com/infoUser//", {
         headers: { Authorization: `Bearer ${data.access}` },
       });
       const userData = await userResponse.json();

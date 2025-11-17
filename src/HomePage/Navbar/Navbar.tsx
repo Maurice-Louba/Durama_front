@@ -371,7 +371,7 @@ const Navbar = () => {
                         <div className="flex gap-4">
                           <img
                             className="w-16 h-16 rounded-lg object-cover group-hover:scale-105 transition-transform duration-200"
-                            src={`http://127.0.0.1:8004${prod.image_principale}`}
+                            src={`https://durama-project.onrender.com${prod.image_principale}`}
                             alt={prod.nom}
                           />
                           <div className="flex-1">
@@ -419,7 +419,7 @@ const Navbar = () => {
                         <img
                           className="w-full h-full object-cover"
                           alt={prod.produit.nom}
-                          src={`http://127.0.0.1:8004${prod.produit.image_principale}`}
+                          src={`https://durama-project.onrender.com${prod.produit.image_principale}`}
                         />
                       </div>
                       <div className="flex-1 min-w-0">
@@ -616,7 +616,7 @@ const Navbar = () => {
                           <img
                             className="w-full h-full object-cover"
                             alt={prod.produit.nom}
-                            src={`http://127.0.0.1:8004${prod.produit.image_principale}`}
+                            src={`https://durama-project.onrender.com${prod.produit.image_principale}`}
                           />
                         </div>
                         <div className="flex-1 min-w-0">
