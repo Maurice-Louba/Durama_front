@@ -935,13 +935,20 @@ export default function ProductPage() {
                     <span className="font-medium">{produit.materiau}</span>
                   </div>
                 )}
+{produit.caracteristiques && (
+  <div className="flex flex-col gap-2 py-3 border-b border-gray-200">
+    <span className="text-gray-600">Compléments</span>
+    <div className="font-medium flex flex-col">
+      {Object.entries(produit.caracteristiques).map(([key]) => (
+        <div key={key} className="flex justify-between">
+          <span className="capitalize">{key}</span>
+          <span></span>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
 
-                {produit.caracteristiques  && (
-                  <div className="flex justify-between py-3 border-b border-gray-200">
-                    <span className="text-gray-600">Complements</span>
-                    <span className="font-medium">{produit.caracteristiques}</span>
-                  </div>
-                )}
               </div>
             </div>
 
