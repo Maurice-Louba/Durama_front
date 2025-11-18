@@ -1,6 +1,7 @@
 import { FaTag } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import axiosInstance from "../../utils/axiosInstance";
+import { useNavigate } from "react-router-dom";
 
 interface Produit {
   id: number;
@@ -12,6 +13,7 @@ interface Produit {
   prix_vente: string;
   prix_promo: string;
   image_principale: string;
+  slug:String;
   etat_stock: string;
   note_moyenne?: number;
   livraison_gratuite?: boolean;
@@ -20,6 +22,7 @@ interface Produit {
 
 const VenteHebdomadaire = () => {
   const [venteHebo,setVenteHebo]=useState<Produit[]>([])
+  const navigate=useNavigate()
   useEffect(()=>{
     const fetchData= async ()=>{
       try{
@@ -59,6 +62,7 @@ const VenteHebdomadaire = () => {
           {venteHebo.map((prod, index) => (
             <div
               key={index}
+              onClick={()=>navigate(`/produit/${prod.slug}`)}
               className="bg-white flex items-center gap-4 rounded-xl p-4 shadow-md hover:shadow-lg transition-shadow duration-300"
             >
               {/* Image */}
