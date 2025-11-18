@@ -155,7 +155,7 @@ const Navbar = () => {
   }, []);
 
   const handleCategorieClick = (categorieId: string) => {
-    navigate(`/boutique?categorie=${categorieId}`);
+    navigate(`/produits/${categorieId}`);
     setExtension(false);
     setMenuOpen(false);
     setMobileCategoriesOpen(false);
@@ -205,7 +205,7 @@ const Navbar = () => {
               <a href="/Boutique" className="hover:text-black transition-colors duration-200 py-2 font-semibold">
                 Boutique
               </a>
-              <a href="#" className="hover:text-black transition-colors duration-200 py-2 font-semibold">
+              <a onClick={()=>navigate('/contact')} className="hover:text-black cursor-pointer transition-colors duration-200 py-2 font-semibold">
                 Contact
               </a>
               <a href="#" className="hover:text-black transition-colors duration-200 py-2 font-semibold">

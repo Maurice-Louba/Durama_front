@@ -17,6 +17,8 @@ import VerifyEmail from './profil/verifierOtp/verifierOtp';
 import { getTokens, setTokens, clearTokens } from "./utils/auth";
 import axios from "axios";
 import ProduitDetails from './ProduitDetails/ProduitDetails';
+import ToutContact from './Contact.tsx/ToutContact';
+import ToutPCategorie from './ProduitParGrosCategorie/ToutPCategorie';
 
 const baseURL = "https://durama-project.onrender.com"; 
 
@@ -63,6 +65,8 @@ function App() {
         <Route path='/SignUp' element={<SignUpForm/>}/>
         <Route path="/VerifierOtp" element={<VerifyEmail/>}/>
         <Route path="/produit/:slug" element={<ProduitDetails/>}/>
+        <Route path="/contact" element={<ToutContact/>}/>
+        <Route path="/produits/:gros_categorie" element={<ToutPCategorie/>}/>
       </Routes>
     </Router>
   )
