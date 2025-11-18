@@ -70,7 +70,7 @@ export default function ContactPage() {
           <div className="lg:col-span-1 space-y-8">
             <div>
               <h3 className="text-xl font-bold mb-4 text-black">
-                Bienvenue chez Kambily
+                Bienvenue chez Durama
               </h3>
               <p className="text-gray-700 text-sm leading-relaxed">
                 Votre partenaire dédié à votre satisfaction. Notre équipe est là pour répondre à toutes vos questions et vous offrir un service exceptionnel.
@@ -103,7 +103,7 @@ export default function ContactPage() {
                 <h4 className="font-semibold text-black">Numéro de téléphone</h4>
               </div>
               <a href="tel:+224613235677" className="text-sm text-gray-700 hover:text-black transition">
-                +224 613 23 56 77
+                +224 624 65 74 23
               </a>
             </div>
 
@@ -114,7 +114,7 @@ export default function ContactPage() {
                 <h4 className="font-semibold text-black">Adresse E-mail</h4>
               </div>
               <a href="mailto:contact@kambily.com" className="text-sm text-gray-700 hover:text-black transition">
-                contact@kambily.com
+                contact@Durma.com
               </a>
             </div>
 
