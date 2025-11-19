@@ -1,5 +1,5 @@
-import  { createContext, useContext, useState, useEffect } from "react";
-import  type { ReactNode } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
+import type { ReactNode } from "react";
 
 interface User {
   id?: number;
@@ -23,37 +23,42 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
-  // Vérifie si un token est stocké au chargement
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) setUser(JSON.parse(storedUser));
   }, []);
 
-  const login = async (email: string, password: string) => {
-    // Exemple : Requête à ton API Django JWT
-    const response = await fetch("http://127.0.0.1:8000/api/token/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+const login = async (email: string, password: string) => {
+  const response = await fetch("https://durama-project.onrender.com/api/token/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
 
-    if (response.ok) {
-      const data = await response.json();
-      // data contient le token et potentiellement les infos user
-      localStorage.setItem("token", data.access);
+  if (!response.ok) {
+    throw new Error("Identifiants invalides");
+  }
 
-      // tu peux aussi récupérer les infos utilisateur :
-      const userResponse = await fetch("https://durama-project.onrender.com/infoUser//", {
-        headers: { Authorization: `Bearer ${data.access}` },
-      });
-      const userData = await userResponse.json();
+  const data = await response.json();
+  localStorage.setItem("token", data.access);
 
-      setUser(userData);
-      localStorage.setItem("user", JSON.stringify(userData));
-    } else {
-      throw new Error("Identifiants invalides");
-    }
-  };
+  const userResponse = await fetch("https://durama-project.onrender.com/infoUser/", {
+    headers: { Authorization: `Bearer ${data.access}` },
+  });
+
+  if (!userResponse.ok) {
+    throw new Error("Impossible de récupérer les infos utilisateur.");
+  }
+
+  const userData: User = await userResponse.json();
+
+  setUser(userData);
+  localStorage.setItem("user", JSON.stringify(userData));
+
+  // 🔥 Affichage dans la console
+  console.log("isAuthenticated =", !!userData);
+};
+
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -62,7 +67,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, isAuthenticated: !!user, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

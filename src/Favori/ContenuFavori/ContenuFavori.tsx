@@ -4,7 +4,7 @@ import {FaShoppingBag}  from "react-icons/fa"
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import Swal from "sweetalert2";
-import { getTokens } from "../../utils/auth";
+import { useAuth } from "../../context/AuthContext";
 interface User {
   id: number;
   first_name: string;
@@ -49,6 +49,7 @@ interface Favori {
 const ContenuFavori = () => {
   const navigate = useNavigate();
   const [favoris, setFavoris] = useState<Favori[]>([]);
+  const {isAuthenticated}=useAuth()
   const [loading, setLoading] = useState<boolean>(true);
   
 
@@ -81,9 +82,9 @@ const ContenuFavori = () => {
   };
 
   const handleAjoutPanier = async (prod: Produit) => {
-    const { access } = getTokens();
+    
 
-    if (!access) {
+    if (!isAuthenticated) {
       Swal.fire({
         title: "Connexion requise 🔒",
         text: "Vous devez d'abord vous connecter ou créer un compte avant d'ajouter un produit au panier.",
@@ -155,7 +156,7 @@ const ContenuFavori = () => {
     );
   }
 
-  if (favoris.length === 0) {
+  if (favoris.length === 0 || !isAuthenticated ) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6">
         <div className="w-full max-w-sm text-center bg-white rounded-2xl shadow-sm p-8">

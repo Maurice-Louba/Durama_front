@@ -3,12 +3,13 @@ import { AiFillShop } from "react-icons/ai";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 import axiosInstance from "../../utils/axiosInstance";
 const MobileNavbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isAuthenticated, setIsAuthenticated]=useState(false)
+  const {isAuthenticated}=useAuth()
     const [user, setUser] = useState({
     first_name: "",
     last_name: "",
@@ -60,11 +61,7 @@ const MobileNavbar = () => {
 
 
 
-  useEffect(()=>{
-    const auth= localStorage.getItem('isAuthenticated')==="true"
-    setIsAuthenticated(auth)
-    console.log(auth)
-  })
+
 
   // Déterminer quelle route est active
   const currentPath = location.pathname;

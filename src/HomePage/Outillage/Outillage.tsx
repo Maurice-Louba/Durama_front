@@ -4,9 +4,9 @@ import { FaToolbox } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { FaRegEye } from "react-icons/fa";
 import Swal from "sweetalert2";
-import { getTokens } from "../../utils/auth";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
+import { useAuth } from "../../context/AuthContext";
 
 interface Produit {
   id: number;
@@ -28,6 +28,7 @@ const Outillage  = () => {
   const [quatreProduits, setQuatreProduits] = useState<Produit[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const {isAuthenticated}=useAuth()
 
   const formatNomProduit = (nom: string, maxLength: number = 20) => {
     if (!nom) return "";
@@ -63,10 +64,10 @@ const Outillage  = () => {
   }, []);
 
   const handleAjoutPanier = async (prod: Produit) => {
-    const { access } = getTokens();
+    
      
 
-    if (!access) {
+    if (!isAuthenticated) {
       Swal.fire({
         title: "Connexion requise 🔒",
         text: "Vous devez d'abord vous connecter ou créer un compte avant d'ajouter un produit au panier.",

@@ -1,10 +1,10 @@
 // src/components/LoginForm.tsx
 import { FaEnvelope, FaLock, FaGoogle, FaFacebook } from "react-icons/fa";
-import axios from "axios";
+
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { setTokens } from "../../utils/auth";
 
+import { useAuth } from "../../context/AuthContext";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -12,32 +12,24 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const { login } = useAuth();
+const handleconnexion = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setError("");
+  setLoading(true);
 
-  const handleconnexion = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
-    try {
-      // endpoint de login (token pair)
-      const response = await axios.post("https://durama-project.onrender.com/api/token/", {
-        email,
-        password,
-      });
+  try {
+    await login(email, password); // <-- On utilise AuthContext
 
-      const { access, refresh } = response.data;
-      localStorage.setItem("access", access); 
-      localStorage.setItem("refresh", refresh);
-      setTokens(access, refresh);
-      localStorage.setItem("isAuthenticated", "true") // <-- utilise utils/auth
-      // redirection après login
-      navigate("/MonProfil");
-    } catch (err: any) {
-      console.error(err);
-      setError("Email ou mot de passe incorrect");
-    } finally {
-      setLoading(false);
-    }
-  };
+    navigate("/MonProfil");
+  } catch (err: any) {
+    console.error(err);
+    setError("Email ou mot de passe incorrect");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   // si déjà connecté, on peut rediriger :
   // (optionnel) : if (isLoggedIn()) navigate("/MonProfil");

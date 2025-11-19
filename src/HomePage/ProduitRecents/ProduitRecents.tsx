@@ -3,9 +3,10 @@ import { IoCubeOutline } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { FaRegEye } from "react-icons/fa";
 import Swal from "sweetalert2";
-import { getTokens } from "../../utils/auth";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
+import { useAuth } from "../../context/AuthContext";
+
 
 interface Produit {
   id: number;
@@ -26,6 +27,7 @@ interface Produit {
 const ProduitsRecents = () => {
   const [quatreProduits, setQuatreProduits] = useState<Produit[]>([]);
   const [loading, setLoading] = useState(true);
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   const formatNomProduit = (nom: string, maxLength: number = 20) => {
@@ -33,6 +35,12 @@ const ProduitsRecents = () => {
     return nom.length > maxLength ? nom.slice(0, maxLength) + "…" : nom;
   };
   
+  useEffect(() => {
+  console.log("isAuthenticated =", isAuthenticated);
+  
+}, [isAuthenticated]);
+
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -61,9 +69,9 @@ const ProduitsRecents = () => {
   }, []);
 
   const handleAjoutPanier = async (prod: Produit) => {
-    const { access } = getTokens();
+    
 
-    if (!access) {
+    if (!isAuthenticated) {
       Swal.fire({
         title: "Connexion requise 🔒",
         text: "Vous devez d'abord vous connecter ou créer un compte avant d'ajouter un produit au panier.",

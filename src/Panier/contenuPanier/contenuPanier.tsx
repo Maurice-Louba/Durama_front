@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { GrShop } from "react-icons/gr";
 import { FaTrash, FaTruck, FaCalendarAlt, FaClock, FaPlus, FaMinus } from "react-icons/fa";
 import axiosInstance from "../../utils/axiosInstance";
+import { useAuth } from "../../context/AuthContext";
 
 interface Produit {
   id: number;
@@ -21,6 +22,7 @@ const ContenuPanier = () => {
   const navigate = useNavigate();
   const [produits, setProduits] = useState<PanierItem[]>([]);
   const [total, setTotal] = useState<number>(0);
+  const {isAuthenticated}=useAuth()
   const [loading, setLoading] = useState<boolean>(true);
 
   const fetchData = async () => {
@@ -114,7 +116,7 @@ const ContenuPanier = () => {
     );
   }
 
-  if (produits.length === 0) {
+  if (produits.length === 0 || !isAuthenticated ) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
         <div className="max-w-md w-full text-center bg-white rounded-3xl shadow-sm p-12">

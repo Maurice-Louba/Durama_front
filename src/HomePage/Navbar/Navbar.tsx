@@ -8,6 +8,7 @@ import { CiShoppingCart } from "react-icons/ci";
 import { RiSearch2Line } from "react-icons/ri";
 import { LuShoppingCart } from "react-icons/lu";
 import axiosInstance from "../../utils/axiosInstance";
+import { useAuth } from "../../context/AuthContext";
 
 
 const Navbar = () => {
@@ -71,8 +72,58 @@ const Navbar = () => {
   const [nombreElement,setNombreElement]=useState(Number)
   const [panierExtension, setPanierExtension] = useState(false);
   const [mobileCartOpen, setMobileCartOpen] = useState(false);
+  const {isAuthenticated}=useAuth()
   const [categorieActive, setCategorieActive] = useState<string | null>(null);
   const [mobileCategoriesOpen, setMobileCategoriesOpen] = useState(false);
+
+  const [user, setUser] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone_number: "",
+    address: "",
+    bio: "",
+    date_joined: "",
+    commandes: 0,
+    favoris: 0,
+    photo: "",
+  });
+
+
+    useEffect(() => {
+    const token = localStorage.getItem("access");
+    if (!token) {
+      
+      return;
+    }
+
+    axiosInstance.get("/infoUser/", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        const data = response.data;
+        setUser({
+          first_name: data.first_name || "",
+          last_name: data.last_name || "",
+          email: data.email,
+          phone_number: data.phone_number || "Non renseigné",
+          address: data.address || "Non renseignée",
+          bio: data.bio || "Aucune bio pour le moment",
+          date_joined: new Date(data.date_joined).toLocaleDateString(),
+          commandes: data.commandes_count || 4,
+          favoris: data.favoris_count || 1,
+          photo:
+            data.photo,
+        });
+        console.log(user)
+      })
+      .catch((error) => {
+        console.error("Erreur lors du chargement du profil :", error);
+        
+      });
+  }, []);
+
+
 
   {/*const toggleMenu = () => setMenuOpen(!menuOpen);*/}
   const toggleExtension = () => {
@@ -228,20 +279,28 @@ const Navbar = () => {
                 <CiShoppingCart size={22} className="text-gray-600" />
                 
                   <span className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                    {nombreElement}
+                    {isAuthenticated ? nombreElement : 0}
                   </span>
                 
               </button>
             </div>
-            
-            <div className="flex items-center gap-3">
-              <button className="px-6 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-colors duration-200 rounded-lg font-semibold">
+            {
+              !isAuthenticated ?
+              <div className="flex items-center gap-3">
+              <button onClick={()=>navigate('/Profil')} className="px-6 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-colors duration-200 rounded-lg font-semibold">
                 Connexion
               </button>
               <button className="px-6 py-2 bg-black text-white hover:bg-gray-800 transition-all duration-200 rounded-lg font-semibold shadow-sm">
                 Inscription
               </button>
             </div>
+            :
+              <div className="w-[25px] h-[25px] rounded-full border border-gray-500">
+              <img className="w-full h-full rounded-full" src={`https://durama-project.onrender.com${user.photo}`}/>
+              </div>
+            }
+            
+
           </div>
 
           {/* Menu mobile */}
@@ -256,7 +315,7 @@ const Navbar = () => {
               <LuShoppingCart size={22} className="text-gray-600" />
               {deuxcontenu.length > 0 && (
                 <span className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  {nombreElement}
+                  {isAuthenticated ? nombreElement:0}
                 </span>
               )}
             </button>
@@ -406,7 +465,7 @@ const Navbar = () => {
             <div className="p-6">
               <h3 className="font-semibold text-gray-900 mb-4">Votre Panier</h3>
               
-              {deuxcontenu.length === 0 ? (
+              {deuxcontenu.length === 0 || !isAuthenticated  ? (
                 <div className="text-center py-8">
                   <CiShoppingCart size={48} className="text-gray-300 mx-auto mb-4" />
                   <p className="text-gray-500">Votre panier est vide</p>
@@ -435,7 +494,7 @@ const Navbar = () => {
                 </div>
               )}
 
-              {deuxcontenu.length > 0 && (
+              {deuxcontenu.length > 0  && isAuthenticated && (
                 <>
                   <div className="border-t border-gray-200 my-4" />
                   <div className="flex justify-between items-center mb-4">
@@ -563,9 +622,11 @@ const Navbar = () => {
                 <div className="border-t border-gray-200 my-4" />
 
                 {/* Boutons de connexion */}
+                {
+                  !isAuthenticated  ?
                 <div className="space-y-3 pt-4">
                   <button 
-                    onClick={() => { navigate('/login'); closeAllMenus(); }}
+                    onClick={() => { navigate('/Profil'); closeAllMenus(); }}
                     className="w-full py-4 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-colors duration-200"
                   >
                     Connexion
@@ -576,7 +637,10 @@ const Navbar = () => {
                   >
                     Inscription
                   </button>
-                </div>
+                </div>:
+                <div></div>
+                }
+
               </div>
             </div>
           </div>
@@ -597,12 +661,12 @@ const Navbar = () => {
                     <FaXmark size={20} className="text-gray-600" />
                   </button>
                 </div>
-                <p className="text-sm text-gray-500">{nombreElement} article{nombreElement > 1 ? 's' : ''}</p>
+                <p className="text-sm text-gray-500">{isAuthenticated ? nombreElement  : 0 } article{nombreElement > 1 && isAuthenticated ? 's' : ''} </p>
               </div>
 
               {/* Contenu du panier mobile */}
               <div className="p-6 overflow-y-auto h-[calc(100vh-200px)]">
-                {deuxcontenu.length === 0 ? (
+                {deuxcontenu.length === 0 || !isAuthenticated ? (
                   <div className="text-center py-12">
                     <CiShoppingCart size={64} className="text-gray-300 mx-auto mb-4" />
                     <p className="text-gray-500 font-medium mb-2">Votre panier est vide</p>
@@ -635,7 +699,7 @@ const Navbar = () => {
                   </div>
                 )}
 
-                {deuxcontenu.length > 0 && (
+                {deuxcontenu.length > 0 && isAuthenticated  && (
                   <>
                     <div className="border-t border-gray-200 my-6" />
                     <div className="flex justify-between items-center mb-6">

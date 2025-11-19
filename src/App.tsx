@@ -19,8 +19,14 @@ import axios from "axios";
 import ProduitDetails from './ProduitDetails/ProduitDetails';
 import ToutContact from './Contact.tsx/ToutContact';
 import ToutPCategorie from './ProduitParGrosCategorie/ToutPCategorie';
+import { AuthProvider } from './context/AuthContext';
 
 const baseURL = "https://durama-project.onrender.com"; 
+
+
+
+
+
 
 function App() {
       useEffect(() => {
@@ -51,6 +57,7 @@ function App() {
 
 
   return (
+    <AuthProvider>
     <Router>
       <Routes>
         <Route path='/' element={<ToutHomePage/>}/>
@@ -69,6 +76,7 @@ function App() {
         <Route path="/produits/:gros_categorie" element={<ToutPCategorie/>}/>
       </Routes>
     </Router>
+    </AuthProvider>
   )
 }
 

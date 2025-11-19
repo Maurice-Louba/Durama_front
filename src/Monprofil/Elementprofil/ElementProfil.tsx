@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useAuth } from "../../context/AuthContext";
 import axiosInstance from "../../utils/axiosInstance";
 
 interface User {
@@ -21,7 +21,7 @@ const Profil = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [previewPhoto, setPreviewPhoto] = useState<string | null>(null);
   const [nombreCommande, setNombreCommande] = useState<string>("");
-
+  const {logout}=useAuth()
   const [user, setUser] = useState<User>({
     first_name: "",
     last_name: "",
@@ -105,11 +105,9 @@ const Profil = () => {
   }, [navigate]);
 
   // Gérer la déconnexion
+
 const handleLogout = () => {
-  localStorage.removeItem("access");
-  localStorage.removeItem("refresh");
-  localStorage.setItem("isAuthenticated", "false");
-  delete axiosInstance.defaults.headers.common["Authorization"];
+  logout(); // <-- met à jour AuthContext et supprime tokens
   navigate("/Profil");
 };
 

@@ -4,7 +4,7 @@ import { IoCubeOutline } from "react-icons/io5";
 import { FaRegEye } from "react-icons/fa";
 import axiosInstance from "../../utils/axiosInstance";
 import Swal from "sweetalert2";
-import { getTokens } from "../../utils/auth";
+import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 interface Produit {
@@ -36,6 +36,8 @@ const Boutique = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [showFilters, setShowFilters] = useState(false);
+  const {isAuthenticated}=useAuth()
+
   const [filters, setFilters] = useState<FilterState>({
     categories: [],
     prixMin: "",
@@ -107,9 +109,9 @@ const Boutique = () => {
   };
 
   const handleAjoutPanier = async (prod: Produit) => {
-    const { access } = getTokens();
+    
 
-    if (!access) {
+    if (!isAuthenticated) {
       Swal.fire({
         title: "Connexion requise 🔒",
         text: "Vous devez d'abord vous connecter ou créer un compte avant d'ajouter un produit au panier.",
