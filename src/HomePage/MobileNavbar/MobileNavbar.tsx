@@ -51,9 +51,11 @@ const MobileNavbar = () => {
             data.photo,
         });
         console.log(user)
+        console.log("isAuthenticate==",isAuthenticated)
       })
       .catch((error) => {
         console.error("Erreur lors du chargement du profil :", error);
+        console.log("isAuthenticate==",isAuthenticated)
         
       });
   }, []);
@@ -95,7 +97,7 @@ const MobileNavbar = () => {
         </div>
 
         <div  className="flex flex-col items-center text-gray-500 hover:text-[#00838F] transition">
-          <Link to={isAuthenticated ? "/MonProfil":"/Profil"}>
+          <Link to={isAuthenticated===true ? "/MonProfil":"/Profil"}>
           {
             isAuthenticated ?(
               user.photo==null ?

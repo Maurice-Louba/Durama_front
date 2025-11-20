@@ -6,7 +6,7 @@ import LoginForm from "./creerprofil/creerprofil"
 const Toutprofil = () => {
   return (
     <div>
-        <Navbar/>
+        
         <MobileNavbar/>
         <LoginForm/>
         <Footer/>
