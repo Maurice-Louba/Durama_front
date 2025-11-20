@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
 const login = async (email: string, password: string) => {
-  const response = await fetch("http://127.0.0.1:8004/api/token/", {
+  const response = await fetch("https://durama-project.onrender.com/api/token/", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
@@ -42,7 +42,7 @@ const login = async (email: string, password: string) => {
   const data = await response.json();
   localStorage.setItem("token", data.access);
 
-  const userResponse = await fetch("http://127.0.0.1:8004/infoUser/", {
+  const userResponse = await fetch("https://durama-project.onrender.com/infoUser/", {
     headers: { Authorization: `Bearer ${data.access}` },
   });
 

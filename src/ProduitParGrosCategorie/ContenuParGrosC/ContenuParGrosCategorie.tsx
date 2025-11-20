@@ -419,7 +419,7 @@ const ProduitParCategorie= () => {
               {/* Image avec badges */}
               <div className="relative overflow-hidden">
                 <img
-                  src={`http://127.0.0.1:8004${prod.image_principale}`}
+                  src={`https://durama-project.onrender.com${prod.image_principale}`}
                   alt={prod.nom}
                   className="w-full h-40 lg:h-48 object-cover group-hover:scale-105 lg:group-hover:scale-110 transition-transform duration-300"
                 />

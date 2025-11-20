@@ -328,7 +328,7 @@ const Navbar = () => {
               <div className="w-[25px] h-[25px] rounded-full border border-gray-500 overflow-hidden">
                 <img 
                   className="w-full h-full rounded-full object-cover" 
-                  src={`http://127.0.0.1:8004${user.photo}`} 
+                  src={`https://durama-project.onrender.com${user.photo}`} 
                   alt="Profile" 
                 />
               </div>
@@ -470,7 +470,7 @@ const Navbar = () => {
                         <div className="flex gap-4">
                           <img
                             className="w-16 h-16 rounded-lg object-cover group-hover:scale-105 transition-transform duration-200"
-                            src={`http://127.0.0.1:8004${prod.image_principale}`}
+                            src={`https://durama-project.onrender.com${prod.image_principale}`}
                             alt={prod.nom}
                           />
                           <div className="flex-1">
@@ -520,7 +520,7 @@ const Navbar = () => {
                         <img
                           className="w-full h-full object-cover"
                           alt={item.produit.nom}
-                          src={`http://127.0.0.1:8004${item.produit.image_principale}`}
+                          src={`https://durama-project.onrender.com${item.produit.image_principale}`}
                         />
                       </div>
                       <div className="flex-1 min-w-0">
@@ -685,7 +685,7 @@ const Navbar = () => {
                       <div className="w-12 h-12 rounded-full border border-gray-300 overflow-hidden">
                         <img 
                           className="w-full h-full object-cover" 
-                          src={`http://127.0.0.1:8004${user.photo}`} 
+                          src={`https://durama-project.onrender.com${user.photo}`} 
                           alt="Profile" 
                         />
                       </div>
@@ -739,7 +739,7 @@ const Navbar = () => {
                           <img
                             className="w-full h-full object-cover"
                             alt={item.produit.nom}
-                            src={`http://127.0.0.1:8004${item.produit.image_principale}`}
+                            src={`https://durama-project.onrender.com${item.produit.image_principale}`}
                           />
                         </div>
                         <div className="flex-1 min-w-0">

@@ -160,7 +160,7 @@ const ContenuPanier = () => {
                   {/* Image du produit */}
                   <div className="relative flex-shrink-0">
                     <img
-                      src={`http://127.0.0.1:8004${prod.produit.image_principale}`}
+                      src={`https://durama-project.onrender.com${prod.produit.image_principale}`}
                       alt={prod.produit.nom}
                       className="w-20 h-20 object-cover rounded-xl bg-gray-100"
                     />
