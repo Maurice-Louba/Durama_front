@@ -119,7 +119,7 @@ export default function ProductPage() {
     const fetchProduit = async (slug: any) => {
       try {
         setLoading(true);
-        const response = await axiosInstance.get(`https://durama-project.onrender.com/produits/${slug}/`);
+        const response = await axiosInstance.get(`http://127.0.0.1:8004/produits/${slug}/`);
         setProduit(response.data);
         console.log("voici le json",response.data.caracteristiques)
       } catch (err: any) {
@@ -144,7 +144,7 @@ export default function ProductPage() {
       
       try {
         setLoadingAttributs(true);
-        const response = await axiosInstance.get(`https://durama-project.onrender.com/variantes/${slug}/attributs/`);
+        const response = await axiosInstance.get(`http://127.0.0.1:8004/variantes/${slug}/attributs/`);
         setAttributs(response.data);
         
         // Initialiser les sélections par défaut avec le premier attribut de chaque type
@@ -180,7 +180,7 @@ export default function ProductPage() {
 
       try {
         const response = await axiosInstance.get(
-          `https://durama-project.onrender.com/verification/${produit.id}/`
+          `http://127.0.0.1:8004/verification/${produit.id}/`
         );
         setVerification(response.data.existe);
       } catch (err: any) {
@@ -195,7 +195,7 @@ export default function ProductPage() {
   useEffect(() => {
     const fetchImages = async (slug: any) => {
       try {
-        const response = await axiosInstance.get(`https://durama-project.onrender.com/images_un_produit/${slug}/`);
+        const response = await axiosInstance.get(`http://127.0.0.1:8004/images_un_produit/${slug}/`);
         setImage(response.data);
       } catch (err: any) {
         console.log(err.message);
@@ -206,11 +206,11 @@ export default function ProductPage() {
 
   const handleFavoris = async (prod: Produit) => {
     try {
-      await axiosInstance.post(`https://durama-project.onrender.com/unProduitCommeFavorie/${prod.id}/`, {
+      await axiosInstance.post(`http://127.0.0.1:8004/unProduitCommeFavorie/${prod.id}/`, {
         produit_id: prod.id
       });
       const response = await axiosInstance.get(
-        `https://durama-project.onrender.com/verification/${prod.id}/`
+        `http://127.0.0.1:8004/verification/${prod.id}/`
       );
       setVerification(response.data.existe);
       Swal.fire({
@@ -227,9 +227,9 @@ export default function ProductPage() {
 
   const handleDeleteFavoris = async (prod: Produit) => {
     try {
-      await axiosInstance.delete(`https://durama-project.onrender.com/supprimer_favori/${prod.id}/`);
+      await axiosInstance.delete(`http://127.0.0.1:8004/supprimer_favori/${prod.id}/`);
       const response = await axiosInstance.get(
-        `https://durama-project.onrender.com/verification/${prod.id}/`
+        `http://127.0.0.1:8004/verification/${prod.id}/`
       );
       setVerification(response.data.existe);
       Swal.fire({
@@ -300,7 +300,7 @@ export default function ProductPage() {
         });
       });
 
-      const response = await axiosInstance.post("https://durama-project.onrender.com/panier/items/", {
+      const response = await axiosInstance.post("http://127.0.0.1:8004/panier/items/", {
         produit_id: prod.id,
         quantite: quantity,
         is_variable: selectedVariante !== undefined,
@@ -488,7 +488,7 @@ export default function ProductPage() {
           <div className="relative">
             <div className="w-full bg-gray-50 overflow-hidden">
               <img
-                src={`https://durama-project.onrender.com${images.length > 0 ? images[mainIndex].image : produit.image_principale}`}
+                src={`http://127.0.0.1:8004${images.length > 0 ? images[mainIndex].image : produit.image_principale}`}
                 alt={produit.nom}
                 className="w-full aspect-square object-cover"
               />
@@ -545,7 +545,7 @@ export default function ProductPage() {
                     }`}
                   >
                     <img 
-                      src={`https://durama-project.onrender.com${src.image}`} 
+                      src={`http://127.0.0.1:8004${src.image}`} 
                       alt={`Vue ${i + 1}`} 
                       className="w-full h-full object-cover" 
                     />
@@ -805,7 +805,7 @@ export default function ProductPage() {
                 </div>
               )}
               <img
-                src={`https://durama-project.onrender.com${images.length > 0 ? images[mainIndex].image : produit.image_principale}`}
+                src={`http://127.0.0.1:8004${images.length > 0 ? images[mainIndex].image : produit.image_principale}`}
                 alt={produit.nom}
                 className="w-full aspect-square object-cover"
               />
@@ -824,7 +824,7 @@ export default function ProductPage() {
                     aria-label={`Voir l'image ${i + 1}`}
                   >
                     <img 
-                      src={`https://durama-project.onrender.com${src.image}`} 
+                      src={`http://127.0.0.1:8004${src.image}`} 
                       alt={`Vue ${i + 1}`} 
                       className="w-full h-full object-cover" 
                     />

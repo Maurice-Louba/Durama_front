@@ -210,7 +210,7 @@ const ContenuFavori = () => {
               {/* Image du produit */}
               <div className="relative flex-shrink-0">
                 <img
-                  src={`https://durama-project.onrender.com${favori.produit.image_principale}`}
+                  src={`http://127.0.0.1:8004${favori.produit.image_principale}`}
                   alt={favori.produit.nom}
                   className="w-24 h-24 object-cover rounded-xl bg-gray-100"
                 />

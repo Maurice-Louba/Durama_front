@@ -21,7 +21,7 @@ import ToutContact from './Contact.tsx/ToutContact';
 import ToutPCategorie from './ProduitParGrosCategorie/ToutPCategorie';
 import { AuthProvider } from './context/AuthContext';
 
-const baseURL = "https://durama-project.onrender.com"; 
+const baseURL = "http://127.0.0.1:8004"; 
 
 
 
